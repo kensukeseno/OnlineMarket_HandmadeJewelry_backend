@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+<meta charset="UTF-8">
+<title>FarmEc</title>
+<link rel="stylesheet" href="stylesheet/stylesheet_login.css">
+<!-- Font Awesomeの読み込み -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- responsive designの適応 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- resonsiveを適応する際は、veiwportの読み込みより下に記載 -->
+<link rel="stylesheet" href="stylesheet/responsive/responsive_login.css">
+</head>
+<body>
+	<header>
+		<div class="header-word">
+			<span>HandmadeJewelry OnlineMarket</span>
+		</div>
+	</header>
+	<form action="/" class="home">
+		<input type="submit" value="ホーム画面へ" />
+	</form>
+	<h1>アーティスト名とパスワードを入力してください</h1>
+	<div th:if="${param.error}">アーティスト名とパスワードが間違っています</div>
+	<div th:if="${param.logout}">ログアウトしました</div>
+	<form th:action="@{/login}" method="post">
+		<div>
+			<input type="text" name="username" placeholder="アーティスト名" />
+		</div>
+		<div>
+			<input type="password" name="password" placeholder="パスワード" />
+		</div>
+		<input type="submit" value="ログイン" />
+	</form>
+	<footer>
+		<div class="footer-word">
+			<span>Living Happily</span>
+		</div>
+	</footer>
+</body>
+</html>

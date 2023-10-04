@@ -1,0 +1,81 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+<meta charset="UTF-8">
+<title>ProductsOfSelectedArtist</title>
+<link rel="stylesheet" href="stylesheet/stylesheet_artist.css">
+<!-- Font Awesomeの読み込み -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- responsive designの適応 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- resonsiveを適応する際は、veiwportの読み込みより下に記載 -->
+<link rel="stylesheet" href="stylesheet/responsive/responsive_artist.css">
+
+</head>
+
+<body>
+	<header>
+		<div class="header-word">
+			<span>HandmadeJewelry OnlineMarket</span>
+		</div>
+	</header>
+
+	<form action="/" class="home">
+		<input type="submit" value="ホーム画面へ" />
+	</form>
+	<div>
+		<h1 th:text="${param.artist}+'さんの販売中作品'"></h1>
+	</div>
+	<div class="resistered-product-contnainer">
+		<div class="resistered-product" th:each="product:${productOnSaleList}">
+			<img th:src=${product.photo}>
+			<table>
+				<tr>
+					<td>商品</td>
+					<td th:text=${product.product}></td>
+				</tr>
+				<tr>
+					<td>個数</td>
+					<td th:text=${product.ammount}></td>
+				</tr>
+				<tr>
+					<td>状態</td>
+					<td th:text=${product.condition}></td>
+				</tr>
+				<tr>
+					<td>値段</td>
+					<td th:text=${product.price}></td>
+				</tr>
+			</table>
+			<input type="hidden" id="artist" th:value="${param.artist}"></input>
+			<div class="btn-container">
+				<button type="button" th:id="${product.productId}"
+					th:attr="onclick=|addVegi('${product.artist}','${product.productId}','${product.product}','${product.ammount}','${product.price}'); checked(${product.productId}); sum();|">選択</button>
+			</div>
+		</div>
+	</div>
+	<div class="cart" id="cart">
+		<h3>お買い物かご</h3>
+		<table id="checkedVegiList">
+			<tr>
+				<td>アーティスト</td>
+				<td>ID</td>
+				<td>商品</td>
+				<td>個数</td>
+				<td>金額</td>
+			</tr>
+		</table>
+		<p id="sum">商品は選択されていません。</p>
+	</div>
+	<div class="clear"></div>
+	<footer>
+		<div class="footer-word">
+			<span>Living Happily</span>
+		</div>
+	</footer>
+	<!-- headの中に書くより　</body>の直前に書くことでwebページの読み込み速度が早くなるらしい -->
+	<script type="text/javascript" src="javascript/artist.js"></script>
+</body>
+
+</html>

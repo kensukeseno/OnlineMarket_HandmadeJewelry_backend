@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ken.handmadeJewelry.mapper.UsersMapper">
+
+	<resultMap id="BasicMap"
+		type="com.ken.handmadeJewelry.entity.UsersEntity">
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="enabled" column="enabled" />
+		<result property="userId" column="user_id" />
+	</resultMap>
+
+</mapper>

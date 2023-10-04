@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.springframework.org/security/tags">
+<head>
+<meta charset="UTF-8">
+<title>OnlineMarket_HandmadeJewelry</title>
+<link rel="stylesheet" href="stylesheet/stylesheet_home.css">
+<!-- Font Awesomeの読み込み -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- responsive designの適応 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- resonsiveを適応する際は、veiwportの読み込みより下に記載 -->
+<link rel="stylesheet" href="stylesheet/responsive/responsive_home.css">
+</head>
+<body>
+	<header>
+		<div class="header-word">
+			<span>HandmadeJewelry OnlineMarket</span>
+		</div>
+	</header>
+
+	<div class="top-wrapper">
+		<div class="top">
+			<h1>手作りアクセサリー</h1>
+			<p>～お気に入りのアーティストさんが見つかる！～</p>
+		</div>
+	</div>
+
+	<div class="btn-wrapper">
+		<form action="logout" sec:authorize="isAuthenticated()">
+			<button class="btn logout" type="submit">
+				ログアウト<span class="fa fa-sign-out"></span>
+			</button>
+		</form>
+		<form action="login" sec:authorize="isAuthenticated() == false">
+			<!-- 半角スペースによってクラスを二つ指定 -->
+			<button class="btn login" type="submit">
+				アーティストさんログイン<span class="fa fa-sign-in"></span>
+			</button>
+		</form>
+		<form action="artistPrivate" sec:authorize="isAuthenticated()">
+			<!-- 半角スペースによってクラスを二つ指定 -->
+			<button class="btn artistPrivate" type="submit">
+				商品登録へ<span class="fa fa-tree	"></span>
+			</button>
+		</form>
+		<!-- 		floatを解除し、親要素に認識させるために用意 -->
+		<div class="clear"></div>
+	</div>
+
+	<div class="intro-container">
+		<form action="productPage" th:each="element:${artistsWithProductSet}">
+			<div class="intro-top">
+				<div class="artist-photo">
+					<img th:src="${element.photo}">
+					<div class="clear"></div>
+				</div>
+				<div class="artist-intro">
+					<img class="artist-intro-background" src="images/Farm intro.jpg">
+					<div class="artist-intro-info">
+						<h2 th:text="${element.artist}"></h2>
+
+						<ul class="artist-list">
+							<li th:text="'活動拠点：'+${element.area}">
+							<li th:text="'製作物：'+${element.productList}">
+							<li><button>
+									<span class="tdyProduct"
+										th:each="productsOnSale, iterStat:|${ID__${element.artistId}__}|"><span
+										th:if=${iterStat.first}>販売中の商品：</span><span
+										th:text=${productsOnSale}></span><span
+										th:unless=${iterStat.last}>、</span></span>
+								</button></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<p class="artist-greeting" th:text="'アーティストさんからのひと言：　'+${element.greeting}" />
+			<input type="hidden" name="artist" th:value="${element.artist}">
+		</form>
+	</div>
+
+	<footer>
+		<div class="footer-word">
+			<span>Living Happily</span>
+		</div>
+	</footer>
+</body>
+</html>
