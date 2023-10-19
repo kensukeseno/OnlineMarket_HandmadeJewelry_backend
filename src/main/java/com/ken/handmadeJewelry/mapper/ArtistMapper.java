@@ -5,12 +5,24 @@ import org.apache.ibatis.annotations.Param;
 
 import com.ken.handmadeJewelry.entity.ArtistEntity;
 
+/**
+ * Artist mapper
+ * @author ken
+ *
+ */
 @Mapper
 public interface ArtistMapper {
 
-//	全選択のselect文の作成
+	/**
+	 * Get all records from artist table
+	 * @return
+	 */
 	ArtistEntity[] findAll();
 
-//	アーティスト名に一致するアーティスト情報の取得
+	/**
+	 * Get records corresponding to param from artist table
+	 * @param artistId
+	 * @return
+	 */
 	ArtistEntity findByArtistId(@Param("artistId") Integer artistId);
 }

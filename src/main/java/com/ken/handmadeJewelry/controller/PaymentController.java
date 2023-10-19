@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ken.handmadeJewelry.model.DbSelectAndInsert;
 
+/**
+ * Payment controller
+ * @author ken
+ *
+ */
 @RestController
 @CrossOrigin(origins = "*")
 class PaymentController {
@@ -16,6 +21,12 @@ class PaymentController {
 	@Autowired
 	private DbSelectAndInsert dbSearch;
 
+	/**
+	 * Purchace products
+	 * @param productId
+	 * @param ammount
+	 * @param buyerId
+	 */
 	@RequestMapping(value = "/buy")
 	@ResponseBody
 	public void payment(@RequestParam(name="productId") Integer productId, @RequestParam(name="ammount") Integer ammount,@RequestParam(name="buyerId") Integer buyerId){

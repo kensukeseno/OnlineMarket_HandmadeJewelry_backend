@@ -5,6 +5,11 @@ import com.ken.handmadeJewelry.entity.ProductEntity;
 
 import lombok.Data;
 
+/**
+ * DTO: artist with products list
+ * @author ken
+ *
+ */
 @Data
 public class ArtistWithProductList {
 

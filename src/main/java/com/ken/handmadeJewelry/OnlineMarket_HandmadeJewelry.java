@@ -5,6 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 
+/**
+ * @author ken
+ *
+ */
 @SpringBootApplication
 @PropertySource("classpath:application.properties")
 public class OnlineMarket_HandmadeJewelry {

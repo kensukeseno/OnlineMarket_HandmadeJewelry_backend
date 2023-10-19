@@ -2,6 +2,11 @@ package com.ken.handmadeJewelry.entity;
 
 import lombok.Data;
 
+/**
+ * Users entity
+ * @author ken
+ *
+ */
 @Data
 public class UsersEntity {
 

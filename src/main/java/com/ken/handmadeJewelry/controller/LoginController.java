@@ -1,21 +1,21 @@
 package com.ken.handmadeJewelry.controller;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ken.handmadeJewelry.entity.ArtistEntity;
 import com.ken.handmadeJewelry.model.DbSelectAndInsert;
 
+/**
+ * Login controller
+ * @author ken
+ *
+ */
 @Controller
 @CrossOrigin(origins = "*")
 public class LoginController {
@@ -23,55 +23,67 @@ public class LoginController {
 	@Autowired
 	DbSelectAndInsert dbSearch;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-//    とりあえず必要なし
 	@GetMapping("/login")
 	String login() {
 		return "login";
 	}
 
+	//	Seems unnecessary for now
+	//	List<ArtistEntity> loginError() {
+	//		List<ArtistEntity> artistEntityList = new ArrayList<>();
+	//		artistEntityList.add(new ArtistEntity());
+	//
+	//		return artistEntityList;
+	//	}
+	
+	/**
+	 * Redirect to login page (error)
+	 * @return
+	 */
 	@GetMapping("/loginFail")
-//	List<ArtistEntity> loginError() {
-//		List<ArtistEntity> artistEntityList = new ArrayList<>();
-//		artistEntityList.add(new ArtistEntity());
-//
-//		return artistEntityList;
-//	}
-	   public RedirectView loginError(){
+	public RedirectView loginError(){
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http"
+				+ "://localhost:3000/?error");
 
-	       RedirectView redirectView = new RedirectView();
+		return redirectView;
+	}
 
-	       redirectView.setUrl("http"
-	       		+ "://localhost:3000/?error");
-
-	       return redirectView;
-	   }
-
+	/**
+	 * User resistration
+	 * @param username
+	 * @param password
+	 */
 	@GetMapping("/resister")
 	void resister(@RequestParam(name="username") String username, @RequestParam(name="password") String password) {
 		dbSearch.custResiter(username, passwordEncoder.encode(password));
 		dbSearch.custRoleResiter(username);
 	}
 
+	/**
+	 * Redirect to login page
+	 * @return
+	 */
 	@GetMapping("/redirectLogin")
-	   public RedirectView redirectLogin(){
+	public RedirectView redirectLogin(){
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http"
+				+ "://localhost:3000/");
+		return redirectView;
+	}
 
-	       RedirectView redirectView = new RedirectView();
-	       redirectView.setUrl("http"
-	       		+ "://localhost:3000/");
-
-	       return redirectView;
-	   }
-
+	/**
+	 * Redirect to logout page
+	 * @return
+	 */
 	@GetMapping("/redirectLogout")
-	   public RedirectView redirectLogout(){
-
-	       RedirectView redirectView = new RedirectView();
-	       redirectView.setUrl("http"
-	       		+ "://localhost:3000/");
-
-	       return redirectView;
-	   }
+	public RedirectView redirectLogout(){
+		RedirectView redirectView = new RedirectView();
+		redirectView.setUrl("http"
+				+ "://localhost:3000/");
+		return redirectView;
+	}
 }

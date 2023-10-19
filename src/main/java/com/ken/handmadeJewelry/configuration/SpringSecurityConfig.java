@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,38 +17,57 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Security configuration
+ * @author ken
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
+	/**
+	 * Access permissions
+	 * @param http
+	 * @return
+	 * @throws Exception
+	 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//		post通信をするために、csrfを無効化
+//		Disable csrf to unable post resquests
 		http.csrf().disable();
 
-//		ロールがUSERのユーザーにアクセス許可付与
+//		Give access permisions to USER role
 		http.authorizeRequests().antMatchers("/artistPrivate", "/resisterProduct", "/deleteProduct").hasRole("USER")
 				.anyRequest().permitAll().and()
-//				ログイン後に遷移するページを指定(ログイン前アクサス試行したページに依らない(true))
+//				Set a page redirected after login (independent to a page before login (ture))
 				.formLogin(form -> form.loginPage("/login").permitAll().defaultSuccessUrl("/redirectLogin", true))
 				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/redirectLogout").and().formLogin().failureUrl("/loginFail");
 		return http.build();
 	}
 
-//	ユーザ情報の読み込み
+	/**
+	 * Load user info
+	 * @param dataSource
+	 * @return
+	 */
 	@Bean
 	UserDetailsManager users(DataSource dataSource) {
 		JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
 		return users;
 	}
 
-//	デフォルトのエンコーダをbcryptにセット
+	/**
+	 * Password encoder
+	 * @return
+	 */
 	@Bean
 	public static PasswordEncoder passwordEncoder() {
 		String idForEncode = "bcrypt";
 		Map<String, PasswordEncoder> encoders = new HashMap<>();
 		encoders.put(idForEncode, new BCryptPasswordEncoder());
 		DelegatingPasswordEncoder passwordEncoder = new DelegatingPasswordEncoder(idForEncode, encoders);
+//		Set a default encoder to bcrypt
 		passwordEncoder.setDefaultPasswordEncoderForMatches(new BCryptPasswordEncoder());
 
 		return passwordEncoder;
