@@ -19,7 +19,10 @@ import com.ken.handmadeJewelry.model.DbSelectAndInsert;
 @Controller
 @CrossOrigin(origins = "*")
 public class LoginController {
-
+	
+	private static final String LOGIN_SUCCESS_PAGE = "http://localhost:3000/";
+	private static final String LOGIN_FAIL_PAGE = "http://localhost:3000/?error";
+	
 	@Autowired
 	DbSelectAndInsert dbSearch;
 
@@ -46,8 +49,7 @@ public class LoginController {
 	@GetMapping("/loginFail")
 	public RedirectView loginError(){
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http"
-				+ "://localhost:3000/?error");
+		redirectView.setUrl(LOGIN_FAIL_PAGE);
 
 		return redirectView;
 	}
@@ -70,8 +72,7 @@ public class LoginController {
 	@GetMapping("/redirectLogin")
 	public RedirectView redirectLogin(){
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http"
-				+ "://localhost:3000/");
+		redirectView.setUrl(LOGIN_SUCCESS_PAGE);
 		return redirectView;
 	}
 
@@ -82,8 +83,7 @@ public class LoginController {
 	@GetMapping("/redirectLogout")
 	public RedirectView redirectLogout(){
 		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl("http"
-				+ "://localhost:3000/");
+		redirectView.setUrl(LOGIN_SUCCESS_PAGE);
 		return redirectView;
 	}
 }

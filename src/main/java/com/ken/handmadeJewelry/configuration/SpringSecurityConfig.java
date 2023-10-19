@@ -25,7 +25,14 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
-
+	
+	private static final String[] USER_ACCESSIBLE_PAGE = new String[] {"/artistPrivate", "/resisterProduct", "/deleteProduct"};
+	private static final String LOGIN_PAGE = "/login";
+	private static final String LOGIN_SUCCESS_PAGE = "/redirectLogin";
+	private static final String LOGOUT_PAGE = "/logout";
+	private static final String LOGOUT_SUCCESS_PAGE = "/redirectLogout";
+	private static final String LOGOIN_FAIL_PAGE = "/loginFail";
+	
 	/**
 	 * Access permissions
 	 * @param http
@@ -38,11 +45,11 @@ public class SpringSecurityConfig {
 		http.csrf().disable();
 
 //		Give access permisions to USER role
-		http.authorizeRequests().antMatchers("/artistPrivate", "/resisterProduct", "/deleteProduct").hasRole("USER")
+		http.authorizeRequests().antMatchers(USER_ACCESSIBLE_PAGE).hasRole("USER")
 				.anyRequest().permitAll().and()
 //				Set a page redirected after login (independent to a page before login (ture))
-				.formLogin(form -> form.loginPage("/login").permitAll().defaultSuccessUrl("/redirectLogin", true))
-				.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/redirectLogout").and().formLogin().failureUrl("/loginFail");
+				.formLogin(form -> form.loginPage(LOGIN_PAGE).permitAll().defaultSuccessUrl(LOGIN_SUCCESS_PAGE, true))
+				.logout().logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PAGE)).logoutSuccessUrl(LOGOUT_SUCCESS_PAGE).and().formLogin().failureUrl(LOGOIN_FAIL_PAGE);
 		return http.build();
 	}
 
