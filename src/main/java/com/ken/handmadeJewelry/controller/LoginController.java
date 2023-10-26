@@ -1,13 +1,16 @@
 package com.ken.handmadeJewelry.controller;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ken.handmadeJewelry.model.DbSelectAndInsert;
 
@@ -19,39 +22,23 @@ import com.ken.handmadeJewelry.model.DbSelectAndInsert;
 @Controller
 @CrossOrigin(origins = "*")
 public class LoginController {
-	
-	private static final String LOGIN_SUCCESS_PAGE = "http://localhost:3000/";
-	private static final String LOGIN_FAIL_PAGE = "http://localhost:3000/?error";
-	
+		
 	@Autowired
 	DbSelectAndInsert dbSearch;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@GetMapping("/login")
-	String login() {
-		return "login";
-	}
-
-	//	Seems unnecessary for now
-	//	List<ArtistEntity> loginError() {
-	//		List<ArtistEntity> artistEntityList = new ArrayList<>();
-	//		artistEntityList.add(new ArtistEntity());
-	//
-	//		return artistEntityList;
-	//	}
-	
 	/**
 	 * Redirect to login page (error)
 	 * @return
 	 */
-	@GetMapping("/loginFail")
-	public RedirectView loginError(){
-		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl(LOGIN_FAIL_PAGE);
-
-		return redirectView;
+	@RequestMapping(value = "/loginFail")
+	@ResponseBody
+	public Map<String, String> redirectError(){
+		Map<String, String> loginResult = new HashMap<>();
+		loginResult.put("result","fail");
+		return loginResult;
 	}
 
 	/**
@@ -59,7 +46,8 @@ public class LoginController {
 	 * @param username
 	 * @param password
 	 */
-	@GetMapping("/resister")
+	@RequestMapping(value = "/resister")
+	@ResponseBody
 	void resister(@RequestParam(name="username") String username, @RequestParam(name="password") String password) {
 		dbSearch.custResiter(username, passwordEncoder.encode(password));
 		dbSearch.custRoleResiter(username);
@@ -69,21 +57,21 @@ public class LoginController {
 	 * Redirect to login page
 	 * @return
 	 */
-	@GetMapping("/redirectLogin")
-	public RedirectView redirectLogin(){
-		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl(LOGIN_SUCCESS_PAGE);
-		return redirectView;
+	@RequestMapping(value = "/redirectLogin")
+	@ResponseBody
+	public Map<String, String> redirectLogin(){
+		Map<String, String> loginResult = new HashMap<>();
+		loginResult.put("result","success");
+		return loginResult;
 	}
 
 	/**
 	 * Redirect to logout page
+	 * This method is probably unnecessary
 	 * @return
 	 */
-	@GetMapping("/redirectLogout")
-	public RedirectView redirectLogout(){
-		RedirectView redirectView = new RedirectView();
-		redirectView.setUrl(LOGIN_SUCCESS_PAGE);
-		return redirectView;
+	@RequestMapping(value = "/redirectLogout")
+	@ResponseBody
+	public void redirectLogout(){
 	}
 }

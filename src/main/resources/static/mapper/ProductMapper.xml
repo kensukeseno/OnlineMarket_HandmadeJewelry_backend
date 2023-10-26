@@ -21,7 +21,7 @@
 
 	<select id="findOneProduct" resultMap="BasicMap">
 		select *
-		from product where product like CONCAT('%', #{product}, '%')
+		from product where product ilike CONCAT('%', #{product}, '%')
 	</select>
 
 	<select id="findProduct" resultMap="BasicMap">

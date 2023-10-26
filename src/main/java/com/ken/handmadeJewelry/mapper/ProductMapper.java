@@ -30,7 +30,7 @@ public interface ProductMapper {
 	ProductEntity[] findProductByArtist(@Param("artistId") Integer artistId);
 
 	/**
-	 * Get records corresponding to product param from product table
+	 * Get records corresponding to product param from product table (broad search)
 	 * @param product
 	 * @return
 	 */
