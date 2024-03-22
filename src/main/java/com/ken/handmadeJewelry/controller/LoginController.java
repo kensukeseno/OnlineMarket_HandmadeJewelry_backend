@@ -28,6 +28,14 @@ public class LoginController {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@RequestMapping(value ="/login")
+	@ResponseBody
+	public Map<String, String> login() {
+		Map<String, String> loginResult = new HashMap<>();
+		loginResult.put("result","success");
+		return loginResult;
+	}
 
 	/**
 	 * Redirect to login page (error)
