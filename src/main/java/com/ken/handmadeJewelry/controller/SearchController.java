@@ -47,7 +47,7 @@ class SearchController {
 	@ResponseBody
 	public List<ArtistWithProductList> productByArtist(){
 		List<ArtistWithProductList> ArtistWithProductListList =dbSearch.getArtistsWithProduct();
-
+		System.out.println("reached");
 		return ArtistWithProductListList;
 	}
 }

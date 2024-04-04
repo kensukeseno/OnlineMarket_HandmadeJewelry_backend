@@ -20,7 +20,6 @@ import com.ken.handmadeJewelry.model.DbSelectAndInsert;
  *
  */
 @Controller
-@CrossOrigin(origins = "*")
 public class LoginController {
 		
 	@Autowired
@@ -29,14 +28,6 @@ public class LoginController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@RequestMapping(value ="/login")
-	@ResponseBody
-	public Map<String, String> login() {
-		Map<String, String> loginResult = new HashMap<>();
-		loginResult.put("result","success");
-		return loginResult;
-	}
-
 	/**
 	 * Redirect to login page (error)
 	 * @return
@@ -46,6 +37,7 @@ public class LoginController {
 	public Map<String, String> redirectError(){
 		Map<String, String> loginResult = new HashMap<>();
 		loginResult.put("result","fail");
+		System.out.println("reached fail");
 		return loginResult;
 	}
 
@@ -56,9 +48,18 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/resister")
 	@ResponseBody
-	void resister(@RequestParam(name="username") String username, @RequestParam(name="password") String password) {
+	Map<String, String> resister(@RequestParam(name="username") String username, @RequestParam(name="password") String password) {
+		Map<String, String> resisterResult = new HashMap<>();
+		try{
 		dbSearch.custResiter(username, passwordEncoder.encode(password));
 		dbSearch.custRoleResiter(username);
+		}
+		catch(Exception e) {
+			resisterResult.put("result","fail");
+			return resisterResult;
+		}
+		resisterResult.put("result","success");
+		return resisterResult;
 	}
 
 	/**
@@ -70,6 +71,7 @@ public class LoginController {
 	public Map<String, String> redirectLogin(){
 		Map<String, String> loginResult = new HashMap<>();
 		loginResult.put("result","success");
+		System.out.println("reached success");
 		return loginResult;
 	}
 

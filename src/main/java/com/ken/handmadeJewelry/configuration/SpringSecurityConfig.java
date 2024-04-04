@@ -1,5 +1,6 @@
 package com.ken.handmadeJewelry.configuration;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,9 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * Security configuration
@@ -26,7 +30,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SpringSecurityConfig {
 	
-	private static final String[] USER_ACCESSIBLE_PAGE = new String[] {"/artistPrivate", "/resisterProduct", "/deleteProduct"};
 	private static final String LOGIN_PAGE = "/login";
 	private static final String LOGIN_SUCCESS_PAGE = "/redirectLogin";
 	private static final String LOGOUT_PAGE = "/logout";
@@ -41,15 +44,18 @@ public class SpringSecurityConfig {
 	 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//		Disable csrf to unable post resquests
+//		Disable csrf to enable post resquests
 		http.csrf().disable();
 
-//		Give access permisions to USER role
-		http.authorizeRequests().antMatchers(USER_ACCESSIBLE_PAGE).hasRole("USER")
-				.anyRequest().permitAll().and()
-//				Set a page redirected after login (independent to a page before login (ture))
-				.formLogin(form -> form.loginPage(LOGIN_PAGE).permitAll().defaultSuccessUrl(LOGIN_SUCCESS_PAGE, true))
+		http.authorizeRequests().and()
+		.formLogin(form -> form.loginPage(LOGIN_PAGE).permitAll().
+		defaultSuccessUrl(LOGIN_SUCCESS_PAGE, true))
 				.logout().logoutRequestMatcher(new AntPathRequestMatcher(LOGOUT_PAGE)).logoutSuccessUrl(LOGOUT_SUCCESS_PAGE).and().formLogin().failureUrl(LOGOIN_FAIL_PAGE);
+		
+		http
+		.cors((cors) -> cors
+			.configurationSource(corsConfigurationSource()));
+		
 		return http.build();
 	}
 
@@ -64,6 +70,18 @@ public class SpringSecurityConfig {
 		return users;
 	}
 
+	@Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
+//        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+	
 	/**
 	 * Password encoder
 	 * @return
@@ -79,4 +97,6 @@ public class SpringSecurityConfig {
 
 		return passwordEncoder;
 	}
+	
+
 }
